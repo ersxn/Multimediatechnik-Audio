@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h1 style="font-family:Avenir"><strong>Multimediatechnik Audio - Team Sinus</strong></h1>
+  <h3 style="font-family:Avenir"><strong>Teammitglieder:</strong> Marco Riege und Ersin Yildirim</h3>
+	</br>
+	<p style="font-size:20px;font-family:Avenir">Nachstehend befinden sich jeweilig die protokollierten Übungen und ihre Aufgaben</p>
+	</br>
+    </br>
+
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+		font-size: 25px;
+}
+
+li {
+    float:left;
+    border-right:1px solid #bbb;
+}
+
+li:last-child {
+    border-right: none;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #333;
+	color: white;
+}
+
+.active {
+    background-color: #333;
+}
+</style>
+</head>
+<body>
+
+<ul>
+  <li><a href="index.html">Übung 01</a></li>
+  <li><a href="Übung 02.html">Übung 02</a></li>
+  <li><a href="Übung 03.html">Übung 03</a></li>
+  <li><a href="Übung 04.html">Übung 04</a></li>
+</ul>
+
+
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" style="font-size:20px;font-family:Avenir;">Aufgabe 01 - Einführung</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse">
+        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
+        <em>
+            Erzeuge zwei kurze Audio-Files (max. 5 s), davon eines mit Musik deiner Wahl aus dem Internet (wobei
+            sich Musik mit einer relativ hohen Dynamik, d.h. Wechsel zwischen relativ leisen und lauten
+            Abschnitten empfiehlt). Wähle eine geeignete Abtastfrequenz (begründen !) und achte auf gute
+            Aussteuerung. Das
+            zweite Audio-File soll eine Sprachaufnahme (mit dem Headset aufgesprochen) enthalten (Übersteuerung
+            vermeiden !). Wähle hier eine Abtastfrequenz von 22 kHz, 16 bit Auflösung, mono.
+            Die Einstellungen wie Abtastrate, Bitzahl und Kanalzahl können im Wavestudio Samplitude vorgenommen
+            werden. Die Eingangsquelle (wahlweise Audio-CD oder Mikrofon) kann im Windows-Mixer 'Aufnahme'
+            eingestellt werden. Benenne die Dateien "Musik_NameArbeitsgruppe.wav" und
+            Sprache_NameArbeitsgruppe.wav". Schick mir die beiden WAV-Dateien unter Nennung deiner Arbeitsgruppe
+            per Mail. In den folgenden Übungen wirst du diese Dateien oft als Ursprungssignale verwenden.
+            Sollten sie verloren gehen, kannst du sie notfalls wieder von mir erhalten. Darauf werde ich dir
+            zwei WAV-Dateien mit Testsignalen zusenden, die du bei den folgenden Aufgabenpunkten benötigst,
+            sine_hiXX.wav und sine_loXX.wav. Nun lies die Musik- und die Sprachdatei mit wave_io ein und erkläre
+            die Angaben im Header ! Wie hoch ist die Bitrate für die beiden Dateien?
+        </em>
+			
+			        <h3>Bitraten der Dateien</h3>
+
+        <p>Für die Musik haben wir eine Abtastrate von 44,1 kHz genommen, damit wir alle Feinheiten hören
+            können.</p>
+
+        <p>Bei der Sprache reichte eine Abtastrate von 11 kHz aus.</p>
+
+        <h3>Erklärungen der Angaben im Header</h3>
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>Attributname</th>
+                <th>Beschreibung</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>filelength</td>
+                <td>Beschreibt die Dateigröße in Byte</td>
+            </tr>
+            <tr>
+                <td>samples</td>
+                <td>Anzahl der Samples</td>
+            </tr>
+            <tr>
+                <td>rate</td>
+                <td>Abtastfrequenz</td>
+            </tr>
+            <tr>
+                <td>bits</td>
+                <td>Auflösung</td>
+            </tr>
+            <tr>
+                <td>bytes per sample</td>
+                <td>Bestimmt wie viele Bits pro Kanal vorhanden sind</td>
+            </tr>
+            <tr>
+                <td>channel</td>
+                <td>Kanäle für Audio: 2 für Stereo, 1 für Mono</td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="font-size:20px;font-family:Avenir;">Aufgabe 02 - Aliasing</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
+		  
+			        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
+		  
+		  ////////////////////
+			
+			<h2>Aufgabe 2.1</h2>
+    <em>
+        Modifiziere wave_io dahingehend, dass die Samples in der WAV-Datei in eine (lesbare)
+        ASCII-Datei
+        geschrieben werden. Lies die von mir geschickten Dateien (Sampling-Frequenz: 16 kHz) ein und
+        bestimme
+        aus den resultierenden Zahlenfolgen in der ASCII-Datei die Frequenz der Sinus-Schwingungen
+        (Begründen
+        und jeweils eine Periode für das Protokoll abspeichern).Überprüfe Deine Schätzung mit dem
+        Spektralanalyse-Tool GRAM.
+    </em>
+
+    <div class="panel-body">
+        
+            <h4>Code-Anpassungen</h4>
+                    <pre>
+    FILE *prt;
+    int i;
+
+    prt = fopen("prt.txt","wt");
+
+    for (i = 0; i < n_wave; i++) {
+        fprintf(prt,"%i\n", wave[i]);
+    }
+
+    fclose(prt);
+                    </pre>
+					
+					
+		///////////////
+		  
+		  </div>
+		
+		///////////////
+		
+		
+      
+    </div>
+		  
+		  </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" style="font-size:20px;font-family:Avenir;">Aufgabe 03 - Bitreduzierung</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body" style="font-family:Avenir;font-size:17px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+</body>
+</html>
+
+
