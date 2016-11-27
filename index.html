@@ -133,9 +133,10 @@ li a:hover:not(.active) {
             </tr>
             </tbody>
         </table>
-</div>
+		  </div>
       </div>
     </div>
+	  
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -145,7 +146,6 @@ li a:hover:not(.active) {
       <div id="collapse2" class="panel-collapse collapse">
         <div class="panel-body" style="font-family:Avenir;font-size:17px;">
 		  
-			        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
 		  
 		  ////////////////////
 			
@@ -178,19 +178,87 @@ li a:hover:not(.active) {
                     </pre>
 					
 					
-		///////////////
+		
 		  
 		  </div>
 		
-		///////////////
+		------
 		
+		    <h2>Aufgabe 2.2</h2>
+    <em>
+        Bei der zeitlichen Diskretisierung eines Analogsignals muß das sogenannte Abtasttheorem
+        eingehalten werden. Wie lautet es und wie läßt sich der Grenzfall, für den es gerade noch
+        gilt, illustrieren (Zeichnung !)?
+    </em>
+
+    <div class="panel-body">
+        <div class="row">
+            <p>
+                Damit das Signal später wieder aus den Abtastwerten rekonstruiert werden kann,
+                muss gewährleistet sein, daß die Abtastfrequenz f<sub>a</sub> mehr als doppelt so
+                hoch gewählt wird wie die im abzutastenden Signal vorhandene höchste Frequenz: f<sub>a</sub> 					> 2* f<sub>max</sub>
+            </p>
+
+            <p>
+                Wird dieses sogenannte Abtasttheorem nicht eingehalten, so kommt es zu
+                irreparablen Fehlern, den sogenannten Faltungsverzerrungen.
+            </p>
+            <figure>
+                <img src="Bilder/grenzfall.jpg" alt="Grenzfall"/>
+				</br> <em class="text-muted">Quelle:
+                    http://public.beuth-hochschule.de/~mixdorff/mmt1/files/schwingungslehre.pdf</em>
+            </figure>
+        </div>
+    </div>
+		
+			
+			
+    <h2>Aufgabe 2.3</h2>
+    <em>
+        Bei herkömmlichen Soundkarten tritt systembedingt kein Aliasing auf, weil das Audiosignal
+        stets geeignet vorbehandelt wird (wie ?). Mit einem kleinen Trick läßt sich Aliasing jedoch
+        nachweisen. Diese auch als Down-Sampling bekannte Methode besteht darin, dass man bei einer
+        WAV-Datei z.B. jeden zweiten Abtastwert wegwirft. Man erhält so eine Wellenform, die genau
+        die Hälfte der ursprünglichen Abtastfrequenz aufweist. Wenn man das Signal nicht vorher
+        bandbegrenzt hat, können Aliasing-Verzerrungen hörbar werden.
+    </em>
+<br/>
+			<br/>
+			
+    <p>
+        Bei herkömmlichen Soundkarten wird das Signal durch einen Tiefpassfilter bearbeitet, sodass alle Frequenzen > f(max)/2 abgetrennt werden.
+    </p>
+		
+			    <h2>Aufgabe 2.4</h2>
+    <em>
+        Modifiziere wave_io dahingehend, dass vom eingelesenen Signal jeder zweite Abtastwert
+        verworfen wird und das resultierende Signal abgespeichert wird. Der Header muß natürlich
+        entsprechend verändert werden! Wende das resultierende Programm zunächst auf 'sine_lo.wav'
+        und 'sine_hi.wav' an. Welche Frequenzen erscheinen nach dem Down-Sampling (Spektrogramm und
+        WAVs ins Protokoll !)? Was würde passieren, wenn man geeignet bandbegrenzen würde?
+    </em>
+
+ <div class="panel-body">
+        <div class="row">
+            <h4>Code-Anpassungen</h4>
+                    <pre>
+    for (i = 0; i < (n_wave/2); i++) {
+        wave[i] = wave[i*2];
+    }
+    freq_in /= 2;
+    n_wave /= 2;
+                    </pre>
+					
+					
+			------
 		
       
     </div>
-		  
-		  </div>
+	 </div>
       </div>
     </div>
+		</div>	  
+		  
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -198,10 +266,68 @@ li a:hover:not(.active) {
         </h4>
       </div>
       <div id="collapse3" class="panel-collapse collapse">
-        <div class="panel-body" style="font-family:Avenir;font-size:17px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
+
+		  
+		                 <h2>Aufgabe 3.1</h2>
+                <em>
+                    Die herkömmlichen PC-Soundkarten arbeiten meist entweder mit 16 oder 8 bit-Auflösung. Wie groß ist die Anzahl der bei diesen beiden Werten darstellbaren Amplitudenwerten?
+                </em>
+		  <br/>
+			<br/>
+                <p>
+                    8 bit entspricht 2<sup>8</sup> Amplitudenwerten = 256 Amplitudenwerte<br/>
+                    16 bit entspricht 2<sup>16</sup> Amplitudenwerten = 65536 Amplitudenwerte
+                </p>
+			
+			                <h2>Aufgabe 3.2</h2>
+                <em>
+                    Wir wollen nun wave_io so modifizieren, dass wir die Bitzahl reduzieren können. Dazu können wir z.B.
+                    alle Samples durch eine Potenz von 2 teilen (Integer-Division ohne Rest). Damit das resultierende
+                    Signal nicht leiser wird als das Original, kompensieren wir die Operation durch Multiplikation mit
+                    derselben Zweierpotenz. Zu beachten: Der Datentyp hat nach wie vor 16 bit!
+                </em>
+                <h4>Code-Anpassungen</h4>
+
+  <pre>
+  read_wave(&wave, &n_wave, &freq_in, &bits_in, in_name, &header);
+  for(i=0; i < n_wave; i++) {
+	wave[i] /= pow(2,1);
+	wave[i] *= pow(2,1);
+  }
+  </pre>
+  
+  <h2>Aufgabe 3.3</h2>
+                <em>
+                    Mit dem entstandenen Programm verändern wir die in Aufgabe 1 erzeugten Wave-Dateien. Ab welcher
+                    Bitzahl tritt bei Musik/Sprache eine hörbare/deutliche Verschlechterung der Qualität ein? Bei
+                    wieviel Bit ist das Sprachsignal noch verständlich ?
+                    <br/>
+                    Was charakterisiert das entstehende Quantisierungsgeräusch und macht es besonders störend?
+                </em>
+				
+				<h2>Aufgabe 3.4</h2>
+                <h4>Code-Anpassungen</h4>
+                    <pre>
+    const int bit=8;
+    short *new_wave;
+
+    new_wave = (short*)malloc(n_wave*sizeof(short));
+
+    for(i=0; i < n_wave; i++){
+        new_wave[i] = wave[i];
+        wave[i] /= pow(2.0,bit);
+        wave[i] *= pow(2.0,bit);
+        wave[i] -= new_wave[i];
+        wave[i] *= pow(2.0, 16-bit-1);
+    }
+                    </pre>
+
+		  
+		  </div>
       </div>
     </div>
-  </div>
+ 
 </div>
     
 </body>
