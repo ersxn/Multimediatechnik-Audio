@@ -45,12 +45,20 @@ li a {
 }
 
 li a:hover:not(.active) {
-    background-color: #333;
+    background-color: #606060;
 	color: white;
+	text-decoration: none;
 }
 
 .active {
     background-color: #333;
+}
+	
+
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
 }
 </style>
 </head>
@@ -59,8 +67,8 @@ li a:hover:not(.active) {
 <ul>
   <li><a href="index.html">Übung 01</a></li>
   <li><a href="Übung 02.html">Übung 02</a></li>
-  <li><a href="Übung 03.html">Übung 03</a></li>
-  <li><a href="Übung 04.html">Übung 04</a></li>
+  <li><a href="Übung 03.html" class="not-active">Übung 03</a></li>
+  <li><a href="Übung 04.html" class="not-active">Übung 04</a></li>
 </ul>
 
 
@@ -147,7 +155,6 @@ li a:hover:not(.active) {
         <div class="panel-body" style="font-family:Avenir;font-size:17px;">
 		  
 		  
-		  ////////////////////
 			
 			<h2>Aufgabe 2.1</h2>
     <em>
@@ -204,7 +211,7 @@ li a:hover:not(.active) {
                 irreparablen Fehlern, den sogenannten Faltungsverzerrungen.
             </p>
             <figure>
-                <img src="Bilder/grenzfall.jpg" alt="Grenzfall"/>
+                <img src="Bilder/U1/grenzfall.jpg" alt="Grenzfall"/>
 				</br> <em class="text-muted">Quelle:
                     http://public.beuth-hochschule.de/~mixdorff/mmt1/files/schwingungslehre.pdf</em>
             </figure>
@@ -250,7 +257,7 @@ li a:hover:not(.active) {
                     </pre>
 					
 					
-			------
+		
 		
       
     </div>
