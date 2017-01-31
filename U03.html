@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h1 style="font-family:Avenir"><strong>Multimediatechnik Audio - Team Sinus</strong></h1>
+  <h3 style="font-family:Avenir"><strong>Teammitglieder:</strong> Marco Riege und Ersin Yildirim</h3>
+	</br>
+	<p style="font-size:20px;font-family:Avenir">Nachstehend befinden sich jeweilig die protokollierten Übungen und ihre Aufgaben</p>
+	</br>
+    </br>
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: transparent;
+	font-size: 18px;
+	color: black;
+}
+
+li {
+    float:left;
+}
+
+li:last-child {
+    border-right: none;
+}
+
+li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 10px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+	background-color:crimson;
+	text-decoration: none;
+	color: white;
+}
+
+.active {
+    background-color: #333;
+}
+	
+
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
+}
+</style>
+</head>
+<body>
+
+<ul>
+  <li><a href="index.html">Übung 01</a></li>
+  <li><a href="U02.html">Übung 02</a></li>
+  <li><a href="U03.html">Übung 03</a></li>
+</ul>
+
+	</br>
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" style="font-size:20px;font-family:Avenir;">Aufgabe 01 - Klirrfaktor</a>
+        </h4>
+		  
+      </div>
+      <div id="collapse1" class="panel-collapse collapse">
+        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
+                <em>
+                    Als erstes wollen wir ein vorhandenes Wavefile in der Lautstärke anheben. Dies realisiert man durch Multiplikation jedes Abtastwertes mit einem konstanten Faktor, d.h. mit einem Multiplizierer. Zunächst wollen wir das Musicfile aus der 1. Übung um 3, 6 und 9 dB verstärken. Dabei wird es bei hoher Verstärkung zwangsläufig zu einem sogenannten Clipping kommen: Das Produkt aus der Originalamplitude und dem Verstärkungsfaktor ist betragsmäßig größer als der maximal darstellbare Amplitudenwert, d.h. bei 16 bit < -32768 bzw. > 32767. In diesem Fall muß dafür gesorgt werden, daß der resultierende Wert auf genau -32768, bzw. 32767 gesetzt wird. Clipping ist akustisch als immer stärker werdende nichtlineare Verzerrung wahrnehmbar.
+                    <br/>
+                    Bei welcher Verstärkung wird eine Verzerrung beim gewählten Soundfile wahrnehmbar? (Source-Ausschnitt, wave und Ausschnitt mit geclippten Bereichen ins Protokoll).
+                    <br/>
+                    Ein Maß für die Verzerrung ist der sogenannte Klirrfaktor k, der für eine periodische Schwingung folgendermaßen definiert ist:
+                    <br/>
+                    k=Effektivwert ohne Grundton/Effektivwert mit Grundton. Der Klirrfaktor läßt sich aus dem Spektrum berechnen. Wir wollen nun eine 1kHz-Sinusschwingung um 6, 9 und 12 dB verstärken und den resultierenden Klirrfaktor berechnen (Spektrogramm des Ausgangsignals mit GRAM berechnen, Plot ins Protokoll).
+                    <br/>
+                    <a href="http://public.beuth-hochschule.de/~mixdorff/mmt1/files/sine_1k.wav" target="_blank">Sinus 1kHz</a>
+                    <br/>
+                    Den Effektivwert ohne/mit Grundton einer harmonischen Schwingung berechnet man, indem man die auf die Grundton bezogenen Amplituden der Obertöne quadriert, addiert und aus dem Resultat die Wurzel zieht:
+                    Effektivwert_gesamt_mit_Grundton = sqrt( Effektivwert_F0**2 + Effektivwert_2F0**2 + Effektivwert_3F0**2 + ...)
+                    <br/>
+                    Dazu muß man die dB-Angaben aus GRAM in lineare Angaben zurückrechnen (siehe Aufgabe 2.1).
+                    <br/><br/>
+                </em>
+<h4>Modifizierter Code</h4>
+<pre>
+    db_factor3db = 1.4125; // 3dB = 10^(3/20)
+    db_factor6db = 1.9952; // 6dB = 10^(6/20)
+    db_factor9db = 2.8184; // 9dB = 10^(9/20)
+    db_factor12db = 3.9811; // 12dB = 10^(12/20)
+
+    new_wave = (short*)malloc(n_wave*sizeof(short));
+    for(i=0; i < n_wave; i++) {
+        float temp = wave[i] * db_factor3db;
+        if (temp > 32767) {
+            wave[i] = 32767;
+        } else if (temp < -32768) {
+            wave[i] = -32768;
+        } else {
+            wave[i] = (short)temp;
+        }
+    }
+</pre>
+			
+			
+			<h4>Musik: Verstärkung um 3, 6, 9 und 12 dB</h4>
+                <div class="col-sm-12">
+                    Wie aus dem Screenshot aus Audacity ersichtlich, tritt bereits ab 3dB Verstärkung Clipping auf. Deutlich hörbar ist es aber erst ab 6dB.
+					Bei 12dB hat die Qualität sehr stark abgenommen.
+					</br>
+					<h5>3 dB</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/Musik_Sinus_db3.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+					</br>
+					<h5>6 dB</h5>
+					<audio controls="controls" src="Aufnahmen/U3/Musik_Sinus_db6.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+					</br>
+					<h5>9 dB</h5>
+					<audio controls="controls" src="Aufnahmen/U3/Musik_Sinus_db9.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+					</br>
+					<h5>12 dB</h5>
+					<audio controls="controls" src="Aufnahmen/U3/Musik_Sinus_db12.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+					</br>
+                    <figure>
+                        <img src="Bilder/U3/36912db.jpeg">
+                        <p>Abbildung: Bei einer Verstärkung um 9 dB ist die Verzerrung wahrnehmbar. Ab 6dB tritt Clipping auf. Dies erkennt man gut im rot eingerahmten Bereich.</p>
+                    </figure>
+                </div>
+                <h4>Sinus 1kHz Verstärkungen</h4>
+                <div class="col-sm-12">
+                    <h5>0dB Verstärkung</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/sine_1k.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                    <figure>
+                        <img src="Bilder/U3/1khz0db.jpg">
+                        <p>Abbildung: Verstärkung von Sinus 1kHz mit 0dB</p>
+                    </figure>
+                </div>
+                <div class="col-sm-12">
+                    <h5>6dB Verstärkung</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/sine_1k_db6.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                    <figure>
+                        <img src="Bilder/U3/sine_1k_6dB.jpg">
+                        <p>Abbildung: Verstärkung von Sinus 1kHz mit 6dB</p>
+                    </figure>
+                </div>
+                <div class="col-sm-12">
+                    <h5>9dB Verstärkung</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/sine_1k_db9.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                    <figure>
+                        <img src="Bilder/U3/sine_1k_9dB.jpg">
+                        <p>Abbildung: Verstärkung von Sinus 1kHz mit 9dB</p>
+                    </figure>
+                </div>
+                <div class="col-sm-12">
+                    <h5>12dB Verstärkung</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/sine_1k_db12.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                    <figure>
+                        <img src="Bilder/U3/sine_1k_12dB.jpg">
+                        <p>Abbildung: Verstärkung von Sinus 1kHz mit 12dB</p>
+                    </figure>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            Frequenz (Hz)
+                        </th>
+                        <th>
+                            Lautstärke (dB)
+                        </th>
+                        <th>
+                            Oberwelle (dB)
+                        </th>
+                        <th>
+                            Prozent (%)
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            1000
+                        </td>
+                        <td>
+                            -3,5
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            3000
+                        </td>
+                        <td>
+                            -18
+                        </td>
+                        <td>
+                            -14,5
+                        </td>
+                        <td>
+                            ca. 19
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            5000
+                        </td>
+                        <td>
+                            -36
+                        </td>
+                        <td>
+                            -32.5
+                        </td>
+                        <td>
+                            ca. 2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            7000
+                        </td>
+                        <td>
+                            -47
+                        </td>
+                        <td>
+                            -43,5
+                        </td>
+                        <td>
+                            ca. 1
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="lead">
+                    Berechnung des Klirrfaktors (allgemein):<br/>
+                    Klirrfaktor k = (Effektivwert_ohne_Grundton) / (Effektivwert_mit_Grundton) <br/>
+                    Effektivwert = sqrt(Effektivwert_1F0<sup>2</sup> + Effektivwert_2F0<sup>2</sup> + Effektivwert_3F0<sup>2</sup> + ...)<br/>
+                    <br/>
+                    Berechnung unseres Klirrfaktors:<br/>
+                    Klirrfaktor k = sqrt ((0,1882<sup>2</sup> + 0,0232<sup>2</sup> + 0,0007<sup>2</sup>)/ (1<sup>2</sup> + 0,1882<sup>2</sup> + 0,0232<sup>2</sup> + 0,0007<sup>2</sup>)) = 0,1863
+                </p>
+           	</div>
+        </div>
+	</div>
+			
+			
+			
+			
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="font-size:20px;font-family:Avenir;">Aufgabe 02 - Echo</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
+
+		  
+    <em>
+       Ein wichtiger Effekt in der Studiotechnik ist das Echo. Dabei wird zu einem Signal eine zeitverzögerte und in der Amplitude gedämpfte Überlagerung hinzugemischt: y(k)=x(k)+a*x(k-T), wobei T eine ganze Zahl zwischen 1 und N sein kann. Wir wollen WAVE_IO so modifieren, daß wir eine Verzögerung von 10 bzw 200 ms erreichen. Um wieviele Abtastwerte müssen wir verzögern, wenn wir mit einer Abtastrate von 44.1 kHz arbeiten ? Wir setzen a auf 0.6. Wende das Echo auf ein Sprach- und ein Musiksignal an. Es kann sein, dass die 10ms nur bei einem recht trockenen Soundfile wie der Sprachaufnahme hörbar werden (Waves original und mit Echo, Programm-Source ins Protokoll). Hinweis: Bei Stereodateien müssen wir berücksichtigen, daß linker und rechter Kanal getrennt verzögert werden müssen. Die Samples für links und rechts liegen im Array wave jeweils hintereinander. 
+    </em>
+			
+
+
+    <div class="panel-body">
+        
+
+		<h4>Modifizierter Code</h4>
+   <pre>
+    n = 0.01 * freq_in; // 10ms
+    //n = 0.2 * freq_in; // 200ms
+    a = 0.6;
+
+    new_wave = malloc(n_wave * sizeof(short));
+    for (i = 0; i < n_wave; i++) {
+        if (i >= n) {
+            new_wave[i] = 0.5 * wave[i] + (short)((float)(wave[i - n]) *a);
+        }
+        else {
+            new_wave[i] = wave[i];
+        }
+    }
+     </pre>
+		
+		<p>
+                    Das n steht für die Anzahl der Verzögerungsglieder und das a für den Faktor des Echos.
+                    Wir addieren auf das Original das Echo (16 Bit + 16 Bit = 32 Bit).
+                    Um eine Übersteuerung zu vermeiden multiplizieren wir mit 0.5.
+                </p>
+                <div class="col-sm-12">
+                    <h5>Musik: 0ms</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/Musik_Sinus.WAV">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Musik: 10ms</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/Musik_Sinus_10ms.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Musik: 200ms</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/Musik_Sinus_200ms.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                </div>
+
+                <div class="col-sm-12">
+                    <h5>Sprache: 0ms</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/Sprache_Sinus.WAV">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Sprache: 10ms</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/Sprache_Sinus_10ms.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Sprache: 200ms</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/Sprache_Sinus_200ms.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                </div>	
+   </div>
+  </div>
+ </div>
+</div>	  
+		  
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" style="font-size:20px;font-family:Avenir;">Aufgabe 03 - Einfacher Filter</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body" style="font-family:Avenir;font-size:17px;">
+
+				<h2>Einfacher Filter</h2>
+                <em>
+                    Ein sehr einfaches Filter kann man z.B. mit der Zuordnungsvorschrift (a) y(k)=0.5*x(k)+0.45*x(k-1) realisieren. Programmiere das Filter und vergleiche eine Musicdatei vor und nach der Filterung. Tue dasselbe mit der Zuordnungsvorschrift (b)
+                    <br/>
+                    y(k) = 0.5 * x(k) - 0.45 * x(k-1). Um was für eine Art Filter handelt es sich jeweils ? (waves Original, Filter a) und b) ins Protokoll)
+                    <br/>
+                    Zum Testen unserer Filter verwenden wir <a href="http://public.beuth-hochschule.de/~mixdorff/mmt1/files/Noise.wav" target="_blank">Weißes Rauschen</a><br/>
+                    das alle Frequenzen enthält. Wenn wir nun das Original-Spektrum (oben) mit den gefilterten vergleichen, sollte sich ein Bild wie in der Mitte und unten ergeben, anderenfalls ist etwas mit dem Programm nicht in Ordnung (welcher Output von welchem Filter stammt, wird nicht verraten ! Das müßt Ihr selber herausfinden.) Um eine Glättung des Spektrums zu erzielen, bei GRAM 'Spectrum Average' auf 100 setzen. (Plots der eigenen Spektren ins Protokoll !)
+                    <br/><br/>
+                </em>
+                <pre>
+     for (i = 0; i < n_wave; i++) {
+		//Tiefpass
+		float temp = 0.5*wave[i] + 0.45*wave[i - 1];
+		//Hochpass
+		//float temp =0.5*wave[i] - 0.45*wave[i-1];
+		wave[i] = (short)temp;
+	 }
+                </pre>
+                <div class="col-sm-12">
+                    <h5>Weisses Rauschen</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/weisses_rauschen.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                    <figure>
+                        <img src="Bilder/U3/weisses_rauschen.jpg">
+                        <p>Abbildung: Weisses Rauschen</p>
+                    </figure>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Tiefpass</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/tiefpass.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                    <figure>
+                        <img src="Bilder/U3/tiefpass.jpg">
+                        <p>Abbildung: Tiefpass</p>
+                    </figure>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Hochpass</h5>
+                    <audio controls="controls" src="Aufnahmen/U3/hochpass.wav">
+                        Your browser does not support the HTML5 Audio element.
+                    </audio>
+                    <figure>
+                        <img src="Bilder/U3/hochpass.jpg">
+                        <p>Abbildung: Hochpass</p>
+                    </figure>
+                </div>
+		  </div>
+      </div>
+    </div>
+ 
+  
+</div>
+    
+</body>
+</html>
+
+
